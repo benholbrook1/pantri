@@ -1,59 +1,49 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/components/useColorScheme';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { useEffect, useState } from 'react';
+import { Slot, useRouter, useSegments } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { View, ActivityIndicator } from 'react-native';
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+  const router = useRouter();
+  const segments = useSegments();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    const checkAuth = async () => {
+      try {
+        // 1. Check for the token
+        const token = await SecureStore.getItemAsync('access_token');
+        
+        // 2. Check where the user is currently trying to go
+        // segments[0] is the top-level route (e.g., "(tabs)" or "login")
+        const inLoginGroup = segments[0] === 'login';
 
-  if (!loaded) {
-    return null;
+        if (token && inLoginGroup) {
+          // If logged in but on login page, go to tabs
+          router.replace('/(tabs)');
+        } else if (!token && !inLoginGroup) {
+          // If NOT logged in and NOT on login page, go to login
+          router.replace('/login');
+        }
+      } catch (e) {
+        console.error("Auth check failed", e);
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    checkAuth();
+  }, [segments]); // Re-run this check whenever the route changes
+
+  // Show a loading spinner while we check the token
+  if (!isReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
-  );
+  // <Slot /> renders the current child route (Login or Tabs)
+  return <Slot />;
 }
