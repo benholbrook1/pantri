@@ -230,3 +230,7 @@ Thumbs.db
 # IDEs (VS Code / PyCharm)
 .vscode/
 .idea/
+
+# markdown
+PROMPTS.md
+zDjango.md
