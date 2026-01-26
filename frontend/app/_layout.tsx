@@ -11,18 +11,17 @@ export default function RootLayout() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // 1. Check for the token
         const token = await SecureStore.getItemAsync('access_token');
         
-        // 2. Check where the user is currently trying to go
-        // segments[0] is the top-level route (e.g., "(tabs)" or "login")
-        const inLoginGroup = segments[0] === 'login';
+        // Check if user is inside the 'auth' folder
+        const inAuthGroup = segments[0] === 'login';
 
-        if (token && inLoginGroup) {
-          // If logged in but on login page, go to tabs
+        if (token && inAuthGroup) {
+          // ✅ Logged in, so kick them out of Login -> go to Tabs
           router.replace('/(tabs)');
-        } else if (!token && !inLoginGroup) {
-          // If NOT logged in and NOT on login page, go to login
+        } else if (!token && !inAuthGroup) {
+          // ❌ Not logged in, so kick them out of Tabs -> go to Login
+          // Make sure this matches your folder name: 'auth/login'
           router.replace('/login');
         }
       } catch (e) {
@@ -33,9 +32,8 @@ export default function RootLayout() {
     };
 
     checkAuth();
-  }, [segments]); // Re-run this check whenever the route changes
+  }, [segments]); 
 
-  // Show a loading spinner while we check the token
   if (!isReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -44,6 +42,5 @@ export default function RootLayout() {
     );
   }
 
-  // <Slot /> renders the current child route (Login or Tabs)
   return <Slot />;
 }

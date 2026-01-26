@@ -1,6 +1,6 @@
 // ACCOUNT TYPES
 export interface User {
-  id: string; // UUID
+  uuid: string; // UUID
   username: string;
   email: string;
 }
@@ -24,24 +24,24 @@ export interface AuthResponse {
 export type ItemStatus = 'FULL' | 'HALF' | 'LOW' | 'GONE';
 
 export interface Category {
-  id: string;
+  uuid: string;
   name: string;
 }
 
 export interface Location {
-  id: string;
+  uuid: string;
   name: string;
   user: string; // User UUID
 }
 
 export interface BaseItem {
-  id: string;
+  uuid: string;
   name: string;
   category?: Category;
 }
 
 export interface PantryItem {
-  id: string;
+  uuid: string;
   item: BaseItem;
   location: Location;
   status: ItemStatus;
@@ -49,7 +49,15 @@ export interface PantryItem {
 }
 
 export interface ListItem {
-  id: string;
+  uuid: string;
   name: string;
   is_checked: boolean;
+  list?: string; // The UUID of the parent list
+}
+
+export interface GroceryList {
+  uuid: string;
+  name: string;
+  created_at: string;
+  items: ListItem[]; // The nested items
 }
