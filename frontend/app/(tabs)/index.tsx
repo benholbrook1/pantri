@@ -3,7 +3,6 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, RefreshControl, Act
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-// Imports from your new modules
 import { inventoryApi } from '../../api/inventory';
 import { GroceryList } from '../../types/api';
 import { GroceryListCard } from '../../components/GroceryListCard';
@@ -43,9 +42,7 @@ export default function ShoppingListScreen() {
   };
 
   const handleListPress = (uuid: string) => {
-    // We will build this route next!
-    // router.push(`/list/${uuid}`);
-    Alert.alert("Coming Soon", "We'll build the details page next!");
+    router.push(`/list/${uuid}`);
   };
 
   if (loading) {
