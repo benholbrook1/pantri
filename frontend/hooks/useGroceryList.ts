@@ -50,5 +50,21 @@ export function useGroceryList(uuid: string | string[] | undefined) {
     await inventoryApi.toggleItem(itemId, !currentStatus);
   };
 
-  return { list, loading, addItem, toggleItem, refreshList };
+  const deleteListItem = async (itemUuid: string) => {
+    if (!list) return;
+
+    // 1. Optimistic Update (Remove it from screen immediately)
+    const updatedItems = list.items.filter(item => item.uuid !== itemUuid);
+    setList({ ...list, items: updatedItems });
+
+    try {
+        // 2. Send delete request to server
+        await inventoryApi.deleteListItem(itemUuid);
+    } catch (e) {
+        console.error("Failed to delete item");
+        refreshList(); // Revert if it fails
+    }
+  };
+
+  return { list, loading, addItem, toggleItem, refreshList, deleteListItem };
 }
