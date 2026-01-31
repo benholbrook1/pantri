@@ -15,6 +15,12 @@ class GroceryListSerializer(serializers.ModelSerializer):
         fields = ['uuid', 'name', 'created_at', 'items']
         read_only_fields = ['uuid', 'created_at']
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ['uuid', 'name']
+        read_only_fields = ['uuid']
+
 
 class PantryItemSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)

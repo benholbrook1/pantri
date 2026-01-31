@@ -1,5 +1,9 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
 import { Link, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 
@@ -31,16 +35,20 @@ export default function TabLayout() {
         options={{
             title: 'My Lists', // Label below the icon
             headerShown: false,
-            tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />, // ✅ Better Icon
+            tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
         />
       <Tabs.Screen
         name="two"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+            title: 'Pantry',
+            headerShown: false,
+            tabBarIcon: ({ color, size, focused }) => (
+            <MaterialCommunityIcons name="cupboard" size={28} color={color} />
+
+            ),
         }}
-      />
+        />
     </Tabs>
   );
 }

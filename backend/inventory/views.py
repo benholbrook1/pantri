@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
-from .models import PantryItem, GroceryList, ListItem
-from .serializers import PantryItemSerializer, GroceryListSerializer, ListItemSerializer
+from .models import PantryItem, GroceryList, ListItem, Location
+from .serializers import PantryItemSerializer, GroceryListSerializer, ListItemSerializer, LocationSerializer
 
 
 class PantryItemViewSet(viewsets.ModelViewSet):
@@ -33,3 +33,11 @@ class ListItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return ListItem.objects.filter(list__user=self.request.user)
+    
+
+class LocationViewSet(viewsets.ModelViewSet):
+    serializer_class = LocationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Location.objects.filter(user=self.request.user)

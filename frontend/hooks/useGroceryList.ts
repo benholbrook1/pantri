@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { inventoryApi } from '../api/inventory';
+import { groceryListApi } from '../api/groceryList';
 import { GroceryList, ListItem } from '../types/api';
 
 export function useGroceryList(uuid: string | string[] | undefined) {
@@ -10,7 +10,7 @@ export function useGroceryList(uuid: string | string[] | undefined) {
   const refreshList = useCallback(async () => {
     if (!uuid || typeof uuid !== 'string') return;
     try {
-      const allLists = await inventoryApi.getLists();
+      const allLists = await groceryListApi.getLists();
       const found = allLists.find(l => l.uuid === uuid);
       setList(found || null);
     } catch (e) {
@@ -33,7 +33,7 @@ export function useGroceryList(uuid: string | string[] | undefined) {
     const tempItem: ListItem = { uuid: 'temp-' + Date.now(), name, is_checked: false };
     setList({ ...list, items: [...list.items, tempItem] });
 
-    await inventoryApi.addItem(list.uuid, name);
+    await groceryListApi.addItem(list.uuid, name);
     refreshList(); // Sync with server
   };
 
@@ -47,7 +47,7 @@ export function useGroceryList(uuid: string | string[] | undefined) {
     );
     setList({ ...list, items: updatedItems });
 
-    await inventoryApi.toggleItem(itemId, !currentStatus);
+    await groceryListApi.toggleItem(itemId, !currentStatus);
   };
 
   const deleteListItem = async (itemUuid: string) => {
@@ -59,7 +59,7 @@ export function useGroceryList(uuid: string | string[] | undefined) {
 
     try {
         // 2. Send delete request to server
-        await inventoryApi.deleteListItem(itemUuid);
+        await groceryListApi.deleteListItem(itemUuid);
     } catch (e) {
         console.error("Failed to delete item");
         refreshList(); // Revert if it fails

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { inventoryApi } from '../api/inventory';
+import { groceryListApi } from '../api/groceryList';
 import { GroceryList } from '../types/api';
 
 import uuid from 'react-native-uuid';
@@ -13,7 +13,7 @@ export function useGroceryLists() {
   // Helper to fetch data
   const refreshLists = useCallback(async () => {
     try {
-      const data = await inventoryApi.getLists();
+      const data = await groceryListApi.getLists();
       setLists(data);
     } catch (e) {
       console.error(e);
@@ -43,7 +43,7 @@ export function useGroceryLists() {
     setLists(prev => [...prev, tempList]);
 
     try {
-      await inventoryApi.createList(name);
+      await groceryListApi.createList(name);
       await refreshLists(); // Sync with server
     } catch (e) {
       // Revert on failure
@@ -60,7 +60,7 @@ export function useGroceryLists() {
 
     try {
       // 2. Send delete request to server
-      await inventoryApi.deleteList(listUuid);
+      await groceryListApi.deleteList(listUuid);
     } catch (e) {
       console.error("Failed to delete list");
       // Revert if it fails

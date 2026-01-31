@@ -1,7 +1,7 @@
 import { apiClient } from './client';
 import { GroceryList, ListItem } from '../types/api';
 
-export const inventoryApi = {
+export const groceryListApi = {
   // Fetch all lists with their items nested inside
   getLists: async () => {
     const response = await apiClient.get<GroceryList[]>('/inventory/grocery-lists/');

@@ -34,7 +34,7 @@ apiClient.interceptors.response.use(
   (response) => response, // Return success responses as is
   async (error) => {
     if (error.response && error.response.status === 401) {
-      console.log("🚨 401 Detected! Logging out...");
+      console.log("401 Detected! Logging out...");
       
       await SecureStore.deleteItemAsync('access_token');
       
