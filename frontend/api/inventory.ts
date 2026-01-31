@@ -31,7 +31,6 @@ export const inventoryApi = {
     return response.data;
   },
 
-  // Delete a list if you need it later
   deleteList: async (listId: string) => {
     await apiClient.delete(`/inventory/grocery-lists/${listId}/`);
   },

@@ -21,7 +21,7 @@ export const CreateListModal = ({ visible, onClose, onSubmit }: Props) => {
     <Modal visible={visible} animationType="slide" transparent={true}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>New Shopping List</Text>
+          <Text style={styles.modalTitle}>New Grocery List</Text>
           
           <TextInput 
             style={styles.input} 
