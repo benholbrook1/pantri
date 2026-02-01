@@ -13,7 +13,7 @@ export const PantryHeader = ({ selectedLocation, onEdit }: PantryHeaderProps) =>
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{selectedLocation}</Text>
+      <Text style={styles.title}>[####----------] 13 Items</Text>
       
       <TouchableOpacity onPress={onEdit} style={styles.editButton}>
         <Ionicons name="pencil" size={18} color="#007AFF" />
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f0f0',
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
   },
