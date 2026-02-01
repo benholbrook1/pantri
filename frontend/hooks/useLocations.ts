@@ -6,6 +6,8 @@ export function useLocations() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   const fetchLocations = useCallback(async () => {
     setLoading(true);
@@ -21,15 +23,23 @@ export function useLocations() {
     }
   }, []);
 
-  // Automatically fetch on mount
   useEffect(() => {
     fetchLocations();
   }, [fetchLocations]);
+
+  useEffect(() => {
+    // Only set default if we have locations and nothing is selected yet
+    if (locations.length > 0 && selectedLocation === null) {
+      setSelectedLocation(locations[0].name);
+    }
+  }, [locations, selectedLocation]);
 
   return { 
     locations, 
     loading, 
     error, 
-    refresh: fetchLocations 
+    refresh: fetchLocations,
+    selectedLocation,
+    selectLocation: setSelectedLocation
   };
 }

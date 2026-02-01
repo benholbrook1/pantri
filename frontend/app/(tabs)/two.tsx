@@ -1,29 +1,62 @@
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { LocationList } from '@/components/LocationLists';
-import { Text, View } from '@/components/Themed';
+// Components
+import { LocationFilter } from '@/components/LocationFilter';
+import { PantryHeader } from '@/components/PantryHeader';
+
+// Hooks
+import { useLocations } from '@/hooks/useLocations';
 
 export default function TabTwoScreen() {
+  // Lift the locations hook here so we have access to the state
+  const { 
+    locations, 
+    loading, 
+    error, 
+    refresh, 
+    selectedLocation, 
+    selectLocation 
+  } = useLocations();
+
+  const handleEditLocation = () => {
+    console.log(`Edit clicked for: ${selectedLocation}`);
+  };
+
   return (
-    <View style={styles.container}>
-      <LocationList />
-    </View>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.content}>
+        
+        {/* 2. Pass props down to Filter */}
+        <LocationFilter 
+          locations={locations}
+          loading={loading}
+          error={error}
+          refresh={refresh}
+          selectedLocation={selectedLocation}
+          onSelectLocation={selectLocation}
+        />
+
+        {/* 3. Pass props down to Header */}
+        <PantryHeader 
+          selectedLocation={selectedLocation}
+          onEdit={handleEditLocation}
+        />
+
+        {/* Future: <PantryList location={selectedLocation} /> */}
+        
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  content: {
+    flex: 1,
   },
 });
