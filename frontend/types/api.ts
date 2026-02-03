@@ -42,10 +42,11 @@ export interface BaseItem {
 
 export interface PantryItem {
   uuid: string;
-  item: BaseItem;
-  location: Location;
-  status: ItemStatus;
-  expiry_date?: string; // ISO Date string from Django
+  name: string;
+  category: string;
+  location: string;
+  expiry_date?: string;
+  status: string;
 }
 
 export interface ListItem {
