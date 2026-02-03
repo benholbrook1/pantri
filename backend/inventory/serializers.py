@@ -23,15 +23,19 @@ class LocationSerializer(serializers.ModelSerializer):
 
 
 class PantryItemSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='category.name', read_only=True)
-    location_name = serializers.CharField(source='location.name', read_only=True)
+
+    name = serializers.CharField(source='base_item.name', read_only=True)
+    category = serializers.CharField(source ='base_item.category', read_only=True)
+    location = serializers.CharField(source='location.name', read_only=True)
 
     class Meta:
         model = PantryItem
         fields = [
-            'uuid', 'name', 'status', 'quantity', 
-            'category', 'category_name', 
-            'location', 'location_name', 
-            'expiry_date'
+            'uuid', 
+            'name', 
+            'category', 
+            'location',
+            'expiry_date',
+            'status',
         ]
         read_only_fields = ['uuid']
