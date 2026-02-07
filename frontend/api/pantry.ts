@@ -9,7 +9,8 @@ export const pantryApi = {
     },
 
     getPantryItems: async () => {{
-        const response = await apiClient.get<PantryItem[]>('inventory/pantri-items/')
+        const response = await apiClient.get<PantryItem[]>('inventory/pantry-items/');
+        return response.data;
     }}
 
 

@@ -5,9 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // Components
 import { LocationFilter } from '@/components/LocationFilter';
 import { PantryHeader } from '@/components/PantryHeader';
+import { PantryList } from '@/components/PantryList';
 
 // Hooks
 import { useLocations } from '@/hooks/useLocations';
+import { usePantryItems } from '@/hooks/usePantryItems';
 
 export default function TabTwoScreen() {
   // Lift the locations hook here so we have access to the state
@@ -19,6 +21,12 @@ export default function TabTwoScreen() {
     selectedLocation, 
     selectLocation 
   } = useLocations();
+
+  const {
+    items,
+    loading: itemsLoading,
+    refresh: itemsRefresh
+  } = usePantryItems(selectedLocation);
 
   const handleEditLocation = () => {
     console.log(`Edit clicked for: ${selectedLocation}`);
@@ -44,8 +52,13 @@ export default function TabTwoScreen() {
           onEdit={handleEditLocation}
         />
 
-        {/* Future: <PantryList location={selectedLocation} /> */}
-        
+        {/* Pantry List*/}
+        <PantryList 
+          items={items}
+          loading={itemsLoading}
+          refresh={itemsRefresh}
+        />
+
       </View>
     </SafeAreaView>
   );
