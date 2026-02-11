@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from .models import PantryItem, GroceryList, ListItem, Location
 from .serializers import PantryItemSerializer, GroceryListSerializer, ListItemSerializer, LocationSerializer
+from django.db.models import Count
 
 
 class PantryItemViewSet(viewsets.ModelViewSet):
@@ -40,4 +41,6 @@ class LocationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Location.objects.filter(user=self.request.user)
+        return Location.objects.filter(user=self.request.user).annotate(
+            item_count=Count('pantryitem')
+        )

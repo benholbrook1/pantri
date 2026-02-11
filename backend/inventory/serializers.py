@@ -16,9 +16,11 @@ class GroceryListSerializer(serializers.ModelSerializer):
         read_only_fields = ['uuid', 'created_at']
 
 class LocationSerializer(serializers.ModelSerializer):
+    item_count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Location
-        fields = ['uuid', 'name']
+        fields = ['uuid', 'name', 'capacity', 'item_count']
         read_only_fields = ['uuid']
 
 

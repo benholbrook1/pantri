@@ -15,6 +15,7 @@ class Category(UUIDBaseModel):
 class Location(UUIDBaseModel):
     name = models.CharField(max_length=100) # e.g., Fridge, Pantry, Freezer
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    capacity = models.PositiveIntegerField(default=50)
 
     def __str__(self): return self.name
 
