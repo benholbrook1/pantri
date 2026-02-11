@@ -32,6 +32,8 @@ export default function TabTwoScreen() {
     console.log(`Edit clicked for: ${selectedLocation}`);
   };
 
+  const currentLocation = locations.find(loc => loc.name === selectedLocation);
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.content}>
@@ -48,7 +50,7 @@ export default function TabTwoScreen() {
 
         {/* 3. Pass props down to Header */}
         <PantryHeader 
-          selectedLocation={selectedLocation}
+          location={currentLocation}
           onEdit={handleEditLocation}
         />
 

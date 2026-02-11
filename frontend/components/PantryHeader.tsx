@@ -1,23 +1,30 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Location } from '../types/api'
+import { CapacityBar } from './CapacityBar';
 
 interface PantryHeaderProps {
-  selectedLocation: string | null;
+  location: Location | undefined; // Pass the whole object now
   onEdit: () => void;
 }
 
-export const PantryHeader = ({ selectedLocation, onEdit }: PantryHeaderProps) => {
+export const PantryHeader = ({ location, onEdit }: PantryHeaderProps) => {
   // If no location is selected yet (loading state), render nothing
-  if (!selectedLocation) return null;
+  if (!location) return null;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>[####----------] 13 Items</Text>
+      <View style={styles.infoContainer}>
+        <CapacityBar 
+          current={location.item_count || 0} 
+          total={location.capacity} 
+        />
+      </View>
       
+      {/* RIGHT SIDE: Action Button */}
       <TouchableOpacity onPress={onEdit} style={styles.editButton}>
-        <Ionicons name="pencil" size={18} color="#007AFF" />
-        <Text style={styles.editText}>Edit</Text>
+        <Ionicons name="settings-outline" size={20} color="#007AFF" />
       </TouchableOpacity>
     </View>
   );
@@ -26,30 +33,23 @@ export const PantryHeader = ({ selectedLocation, onEdit }: PantryHeaderProps) =>
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center', 
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 15,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
+    gap: 15, 
   },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
+  infoContainer: {
+    flex: 1,
   },
   editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
     padding: 8,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#eff6ff',
     borderRadius: 8,
-  },
-  editText: {
-    marginLeft: 5,
-    color: '#007AFF',
-    fontSize: 14,
-    fontWeight: '600',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -32,6 +32,8 @@ export interface Location {
   uuid: string;
   name: string;
   user: string; // User UUID
+  capacity: number;
+  item_count?: number;
 }
 
 export interface BaseItem {
